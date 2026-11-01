@@ -11,19 +11,24 @@ st.set_page_config(
 )
 
 # ---------------------- 加载敏感词 ----------------------
-def load_sensitive_words(path="sensitive.txt"):
+import os
+def load_sensitive_words():
     words = []
+    # 拿到app.py所在文件夹
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    path = os.path.join(base_dir, "sensitive.txt")
     try:
         with open(path, "r", encoding="utf-8") as f:
             for line in f:
                 w = line.strip()
                 if w:
                     words.append(w)
-    except:
+    except FileNotFoundError:
         st.warning("⚠️ 未找到sensitive.txt，敏感审核功能关闭")
     return words
 
 sensitive_list = load_sensitive_words()
+
 
 def check_sensitive(text):
     for word in sensitive_list:
